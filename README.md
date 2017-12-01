@@ -1,1 +1,1 @@
-# nowra
+# nowra -- a c service framework
