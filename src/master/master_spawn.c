@@ -89,23 +89,23 @@ void master_spawn(MASTER_SERV *serv)
 	MASTER_PID pid;
 	int     n;
 
-	if (master_child_table == 0)
+	if (master_child_table == 0) {
 		master_child_table = binhash_create(0);
-
+    }
 	/*
 	 * Sanity checks. The master_avail module is supposed to know what it is
 	 * doing.
 	 */
 
-	if (!MASTER_LIMIT_OK(serv->max_proc, serv->total_proc))
+	if (!MASTER_LIMIT_OK(serv->max_proc, serv->total_proc)) {
 		msg_panic("%s: at process limit %d", myname, serv->total_proc);
-
-	if (serv->avail_proc > 0)
+    }
+	if (serv->avail_proc > 0) {
 		msg_panic("%s: processes available: %d", myname, serv->avail_proc);
-
-	if (serv->flags & MASTER_FLAG_THROTTLE)
+    }
+	if (serv->flags & MASTER_FLAG_THROTTLE) {
 		msg_panic("%s: throttled service: %s", myname, serv->path);
-
+    }
 	/*
 	 * Create a child process and connect parent and child via the status
 	 * pipe.

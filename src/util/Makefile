@@ -60,3 +60,4 @@ binhash.o:binhash.c
 
 clean:
 	rm -f *.o libutil.a
+	rm -f main 

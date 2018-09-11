@@ -43,4 +43,5 @@ single_server.o:single_server.c
 
 clean:
 	rm -f *.o
+	rm -f master 
 

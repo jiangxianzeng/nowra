@@ -4,7 +4,7 @@ LIB = ../util/libutil.a
 INCLUDE = ../util/ 
 
 smtpd:smtpd.c $(OBJECTS)
-	gcc -o smtpd smtpd.c -I $(INCLUDE)  -I ../master/ $(OBJECTS) $(LIB)
+	gcc -g -o smtpd smtpd.c -I $(INCLUDE)  -I ../master/ $(OBJECTS) $(LIB)
 
 clean:
 	rm -f smtpd 

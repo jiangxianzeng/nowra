@@ -8,4 +8,4 @@
 # service type  wakeup  maxproc command + args
 #               (never) (100)
 # ==========================================================================
-127.0.0.1:9000      inet     -       10       service/smtpd
+127.0.0.1:9000      inet     -       10       ../service/smtpd
