@@ -111,8 +111,9 @@ void master_avail_more(MASTER_SERV *serv, MASTER_PROC *proc)
 
 	msg_info("%s: pid %d (%s)", myname, proc->pid, proc->serv->name);
 
-	if (proc->avail == MASTER_STAT_AVAIL)
+	if (proc->avail == MASTER_STAT_AVAIL){
 		msg_panic("%s: process already available", myname);
+	}
 
 	serv->avail_proc++;
 	proc->avail = MASTER_STAT_AVAIL;
