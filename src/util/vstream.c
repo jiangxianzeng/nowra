@@ -52,6 +52,8 @@ static int vstream_buf_space(VBUF *, int);
     (bp)->space = (space_action); \
     }
 
+#define VSTREAM_FLAG_READ_DOUBLE (VSTREAM_FLAG_READ | VSTREAM_FLAG_DOUBLE)
+#define VSTREAM_FLAG_WRITE_DOUBLE (VSTREAM_FLAG_WRITE | VSTREAM_FLAG_DOUBLE)
 
 /* vstream_buf_init - initialize buffer */
 
@@ -119,4 +121,35 @@ VSTREAM *vstream_fopen(const char *path, int flags, int mode)
     stream->path = mystrdup(path);
     return (stream);
     }
+}
+
+/* vstream_fclose - close buffered stream */
+
+int  vstream_fclose(VSTREAM *stream)
+{
+    int     err;
+
+    if (stream->pid != 0)
+    msg_panic("vstream_fclose: stream has process");
+    if ((stream->buf.flags & VSTREAM_FLAG_WRITE_DOUBLE) != 0)
+    vstream_fflush(stream);
+    err = vstream_ferror(stream);
+    if (stream->buf.flags & VSTREAM_FLAG_DOUBLE) {
+    err |= close(stream->read_fd);
+    if (stream->write_fd != stream->read_fd)
+        err |= close(stream->write_fd);
+    vstream_buf_wipe(&stream->read_buf);
+    vstream_buf_wipe(&stream->write_buf);
+    stream->buf = stream->read_buf;
+    } else {
+    err |= close(stream->fd);
+    vstream_buf_wipe(&stream->buf);
+    }
+    if (stream->path)
+    myfree(stream->path);
+    if (stream->jbuf)
+    myfree((char *) stream->jbuf);
+    if (!VSTREAM_STATIC(stream))
+    myfree((char *) stream);
+    return (err ? VSTREAM_EOF : 0);
 }
